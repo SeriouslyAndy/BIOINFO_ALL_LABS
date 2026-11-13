@@ -1,3 +1,8 @@
+<!--
+@author: SeriouslyAndy(JavaKet)
+@date: 13-11-2026
+-->
+
 # Lab 1 – Formulas
 
 ## Notation

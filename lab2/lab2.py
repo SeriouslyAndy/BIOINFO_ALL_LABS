@@ -1,37 +1,105 @@
+# @author: SeriouslyAndy(JavaKet)
+# @date: 13-11-2026
+
 import os
 import sys
 
 # genetic code table: RNA codon -> one-letter amino acid
 CODON_TABLE = {
-    'UUU': 'F', 'UUC': 'F', 'UUA': 'L', 'UUG': 'L',
-    'UCU': 'S', 'UCC': 'S', 'UCA': 'S', 'UCG': 'S',
-    'UAU': 'Y', 'UAC': 'Y', 'UAA': 'Stop', 'UAG': 'Stop',
-    'UGU': 'C', 'UGC': 'C', 'UGA': 'Stop', 'UGG': 'W',
-    'CUU': 'L', 'CUC': 'L', 'CUA': 'L', 'CUG': 'L',
-    'CCU': 'P', 'CCC': 'P', 'CCA': 'P', 'CCG': 'P',
-    'CAU': 'H', 'CAC': 'H', 'CAA': 'Q', 'CAG': 'Q',
-    'CGU': 'R', 'CGC': 'R', 'CGA': 'R', 'CGG': 'R',
-    'AUU': 'I', 'AUC': 'I', 'AUA': 'I', 'AUG': 'M',
-    'ACU': 'T', 'ACC': 'T', 'ACA': 'T', 'ACG': 'T',
-    'AAU': 'N', 'AAC': 'N', 'AAA': 'K', 'AAG': 'K',
-    'AGU': 'S', 'AGC': 'S', 'AGA': 'R', 'AGG': 'R',
-    'GUU': 'V', 'GUC': 'V', 'GUA': 'V', 'GUG': 'V',
-    'GCU': 'A', 'GCC': 'A', 'GCA': 'A', 'GCG': 'A',
-    'GAU': 'D', 'GAC': 'D', 'GAA': 'E', 'GAG': 'E',
-    'GGU': 'G', 'GGC': 'G', 'GGA': 'G', 'GGG': 'G',
+    "UUU": "F",
+    "UUC": "F",
+    "UUA": "L",
+    "UUG": "L",
+    "UCU": "S",
+    "UCC": "S",
+    "UCA": "S",
+    "UCG": "S",
+    "UAU": "Y",
+    "UAC": "Y",
+    "UAA": "Stop",
+    "UAG": "Stop",
+    "UGU": "C",
+    "UGC": "C",
+    "UGA": "Stop",
+    "UGG": "W",
+    "CUU": "L",
+    "CUC": "L",
+    "CUA": "L",
+    "CUG": "L",
+    "CCU": "P",
+    "CCC": "P",
+    "CCA": "P",
+    "CCG": "P",
+    "CAU": "H",
+    "CAC": "H",
+    "CAA": "Q",
+    "CAG": "Q",
+    "CGU": "R",
+    "CGC": "R",
+    "CGA": "R",
+    "CGG": "R",
+    "AUU": "I",
+    "AUC": "I",
+    "AUA": "I",
+    "AUG": "M",
+    "ACU": "T",
+    "ACC": "T",
+    "ACA": "T",
+    "ACG": "T",
+    "AAU": "N",
+    "AAC": "N",
+    "AAA": "K",
+    "AAG": "K",
+    "AGU": "S",
+    "AGC": "S",
+    "AGA": "R",
+    "AGG": "R",
+    "GUU": "V",
+    "GUC": "V",
+    "GUA": "V",
+    "GUG": "V",
+    "GCU": "A",
+    "GCC": "A",
+    "GCA": "A",
+    "GCG": "A",
+    "GAU": "D",
+    "GAC": "D",
+    "GAA": "E",
+    "GAG": "E",
+    "GGU": "G",
+    "GGC": "G",
+    "GGA": "G",
+    "GGG": "G",
 }
 
 # one-letter -> three-letter amino acid names
 THREE_LETTER = {
-    'A': 'Ala', 'R': 'Arg', 'N': 'Asn', 'D': 'Asp', 'C': 'Cys',
-    'Q': 'Gln', 'E': 'Glu', 'G': 'Gly', 'H': 'His', 'I': 'Ile',
-    'L': 'Leu', 'K': 'Lys', 'M': 'Met', 'F': 'Phe', 'P': 'Pro',
-    'S': 'Ser', 'T': 'Thr', 'W': 'Trp', 'Y': 'Tyr', 'V': 'Val',
-    '*': 'Stop', '?': '???',
+    "A": "Ala",
+    "R": "Arg",
+    "N": "Asn",
+    "D": "Asp",
+    "C": "Cys",
+    "Q": "Gln",
+    "E": "Glu",
+    "G": "Gly",
+    "H": "His",
+    "I": "Ile",
+    "L": "Leu",
+    "K": "Lys",
+    "M": "Met",
+    "F": "Phe",
+    "P": "Pro",
+    "S": "Ser",
+    "T": "Thr",
+    "W": "Trp",
+    "Y": "Tyr",
+    "V": "Val",
+    "*": "Stop",
+    "?": "???",
 }
 
-START = 'AUG'
-STOPS = ('UAA', 'UAG', 'UGA')
+START = "AUG"
+STOPS = ("UAA", "UAG", "UGA")
 
 
 def clean_sequence(text):
@@ -40,7 +108,7 @@ def clean_sequence(text):
     for line in text.splitlines():
         if not line.startswith(">"):
             parts.append(line.strip().upper())
-    return "".join(parts).replace('T', 'U')
+    return "".join(parts).replace("T", "U")
 
 
 def read_fasta(lines):
@@ -71,9 +139,9 @@ def translate(rna):
     # translate codon by codon (no start/stop rules here)
     protein = ""
     for i in range(0, len(rna) - 2, 3):
-        aa = CODON_TABLE.get(rna[i : i + 3], '?')
-        if aa == 'Stop':
-            aa = '*'
+        aa = CODON_TABLE.get(rna[i : i + 3], "?")
+        if aa == "Stop":
+            aa = "*"
         protein = protein + aa
     return protein
 
@@ -120,13 +188,15 @@ def find_genes(rna):
                 # AUG in this frame would hit the same end, so stop the frame
                 break
 
-            genes.append({
-                "frame": frame + 1,
-                "start": i + 1,          # 1-based position of the A in AUG
-                "end": j + 3,            # 1-based position of the last stop base
-                "stop": rna[j : j + 3],
-                "protein": translate(rna[i:j]),
-            })
+            genes.append(
+                {
+                    "frame": frame + 1,
+                    "start": i + 1,  # 1-based position of the A in AUG
+                    "end": j + 3,  # 1-based position of the last stop base
+                    "stop": rna[j : j + 3],
+                    "protein": translate(rna[i:j]),
+                }
+            )
             i = j + 3  # continue after the stop
     genes.sort(key=lambda g: g["start"])
     return genes
@@ -168,16 +238,37 @@ def report(name, rna):
     print("AUG with no stop (not valid):", len(open_starts))
     print()
     for n, g in enumerate(genes, 1):
-        print(n, ": frame", g["frame"], "| pos", g["start"], "-", g["end"],
-              "|", g["stop"], "|", len(g["protein"]), "aa")
+        print(
+            n,
+            ": frame",
+            g["frame"],
+            "| pos",
+            g["start"],
+            "-",
+            g["end"],
+            "|",
+            g["stop"],
+            "|",
+            len(g["protein"]),
+            "aa",
+        )
 
     best = longest_gene(genes)
     if best is None:
         print("No valid gene found.")
     else:
         print()
-        print("Longest gene: frame", best["frame"], "pos", best["start"], "-", best["end"],
-              "(", len(best["protein"]), "aa )")
+        print(
+            "Longest gene: frame",
+            best["frame"],
+            "pos",
+            best["start"],
+            "-",
+            best["end"],
+            "(",
+            len(best["protein"]),
+            "aa )",
+        )
         print(best["protein"])
         print()
         print(to_three_letter(best["protein"]))

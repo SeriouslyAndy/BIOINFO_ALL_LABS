@@ -1,3 +1,6 @@
+# @author: SeriouslyAndy(JavaKet)
+# @date: 13-11-2026
+
 import random
 
 ALPHABET = "ACGT"
@@ -12,8 +15,8 @@ def generate_dna(length):
 
 
 def count_groups(s, size):
-# count every group of letters in s (size)
-# ACGT with size 2 gives AC CG GT
+    # count every group of letters in s (size)
+    # ACGT with size 2 gives AC CG GT
     counts = {}
     for i in range(len(s) - size + 1):
         group = s[i : i + size]

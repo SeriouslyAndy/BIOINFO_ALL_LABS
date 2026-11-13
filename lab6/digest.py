@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# @author: SeriouslyAndy(JavaKet)
+# @date: 13-11-2026
+
 """
 Lab 6 - Restriction digest + electrophoresis gel simulation.
 
@@ -22,18 +25,21 @@ import urllib.request
 # name -> (recognition site 5'->3', cut position inside the site on the top strand)
 # e.g. EcoRI  G^AATTC  -> cut after index 1
 ENZYMES = {
-    "EcoRI":   ("GAATTC", 1),   # G^AATTC
-    "BamHI":   ("GGATCC", 1),   # G^GATCC
-    "HindIII": ("AAGCTT", 1),   # A^AGCTT
-    "TaqI":    ("TCGA",   1),   # T^CGA
-    "HaeIII":  ("GGCC",   2),   # GG^CC (blunt)
+    "EcoRI": ("GAATTC", 1),  # G^AATTC
+    "BamHI": ("GGATCC", 1),  # G^GATCC
+    "HindIII": ("AAGCTT", 1),  # A^AGCTT
+    "TaqI": ("TCGA", 1),  # T^CGA
+    "HaeIII": ("GGCC", 2),  # GG^CC (blunt)
 }
 
-NCBI_URL = ("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi"
-            "?db=nuccore&id={acc}&rettype=fasta&retmode=text")
+NCBI_URL = (
+    "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi"
+    "?db=nuccore&id={acc}&rettype=fasta&retmode=text"
+)
 
 
 # ---------------------------------------------------------------- sequence I/O
+
 
 def read_fasta(path):
     with open(path) as fh:
@@ -59,6 +65,7 @@ def fetch_ncbi(accession):
 
 # ---------------------------------------------------------------- digestion
 
+
 def find_cuts(seq, site, cut_offset):
     """Return cut positions (0-based index of the first base AFTER the cut).
 
@@ -69,7 +76,7 @@ def find_cuts(seq, site, cut_offset):
     i = seq.find(site)
     while i != -1:
         cuts.append(i + cut_offset)
-        i = seq.find(site, i + 1)          # i + 1 -> overlapping sites are found too
+        i = seq.find(site, i + 1)  # i + 1 -> overlapping sites are found too
     return cuts
 
 
@@ -80,7 +87,7 @@ def fragments(seq_len, cuts, circular=False):
         return [seq_len]
     if circular:
         frags = [b - a for a, b in zip(cuts, cuts[1:])]
-        frags.append(seq_len - cuts[-1] + cuts[0])   # piece that wraps around
+        frags.append(seq_len - cuts[-1] + cuts[0])  # piece that wraps around
         return frags
     bounds = [0] + cuts + [seq_len]
     return [b - a for a, b in zip(bounds, bounds[1:])]
@@ -117,6 +124,7 @@ def migration(bp, min_bp=100, max_bp=30000):
 def draw_gel(lanes, title, out="gel.png"):
     """lanes: list of (label, [fragment lengths])."""
     import matplotlib
+
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
 
@@ -133,13 +141,20 @@ def draw_gel(lanes, title, out="gel.png"):
             # bigger fragments carry more DNA mass -> brighter and thicker band
             # (identical lengths overlap and add up, like on a real gel)
             intensity = 0.35 + 0.65 * (bp / max_len) ** 0.5
-            ax.add_patch(plt.Rectangle((x - 0.33, y - 0.004), 0.66, 0.008 + 0.006 * intensity,
-                                       color=(1.0, 0.55, 0.15), alpha=intensity))
+            ax.add_patch(
+                plt.Rectangle(
+                    (x - 0.33, y - 0.004),
+                    0.66,
+                    0.008 + 0.006 * intensity,
+                    color=(1.0, 0.55, 0.15),
+                    alpha=intensity,
+                )
+            )
             if label == "Ladder":
                 ax.text(x - 0.45, y, f"{bp}", color="white", fontsize=7, ha="right", va="center")
 
     ax.set_xlim(-1.1, len(all_lanes) - 0.4)
-    ax.set_ylim(1.05, -0.08)                          # wells on top
+    ax.set_ylim(1.05, -0.08)  # wells on top
     ax.set_xticks(range(len(all_lanes)))
     ax.set_xticklabels([l for l, _ in all_lanes], rotation=30, ha="right")
     ax.set_yticks([])
@@ -153,16 +168,31 @@ def draw_gel(lanes, title, out="gel.png"):
 
 # ---------------------------------------------------------------- main
 
+
 def main():
     p = argparse.ArgumentParser(description="Restriction digest + gel simulation")
     src = p.add_mutually_exclusive_group()
-    src.add_argument("-a", "--accession", default="NC_001416",
-                     help="NCBI accession (default: NC_001416, bacteriophage lambda)")
+    src.add_argument(
+        "-a",
+        "--accession",
+        default="NC_001416",
+        help="NCBI accession (default: NC_001416, bacteriophage lambda)",
+    )
     src.add_argument("-f", "--fasta", help="local FASTA file instead of downloading")
-    p.add_argument("-e", "--enzymes", nargs="+", default=["EcoRI", "BamHI", "HindIII"],
-                   help=f"enzymes to use, from: {', '.join(ENZYMES)}")
-    p.add_argument("-c", "--custom", nargs="*", default=[],
-                   help="extra enzymes as NAME:SITE:CUT, e.g. PstI:CTGCAG:5")
+    p.add_argument(
+        "-e",
+        "--enzymes",
+        nargs="+",
+        default=["EcoRI", "BamHI", "HindIII"],
+        help=f"enzymes to use, from: {', '.join(ENZYMES)}",
+    )
+    p.add_argument(
+        "-c",
+        "--custom",
+        nargs="*",
+        default=[],
+        help="extra enzymes as NAME:SITE:CUT, e.g. PstI:CTGCAG:5",
+    )
     p.add_argument("--circular", action="store_true", help="treat the DNA as circular (plasmid)")
     p.add_argument("-o", "--out", default="gel.png", help="output image for the gel")
     args = p.parse_args()

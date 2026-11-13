@@ -1,3 +1,6 @@
+# @author: SeriouslyAndy(JavaKet)
+# @date: 13-11-2026
+
 import sys
 
 from lab2 import clean_sequence, to_three_letter, translate_coding_region

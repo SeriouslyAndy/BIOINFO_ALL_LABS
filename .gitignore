@@ -1,2 +1,8 @@
 __pycache__/
 *.pyc
+*.zip
+.venv/
+lab3/cache/
+lab4/samples.txt
+lab5/sequence.txt
+# @co-author: SeriouslyAndy(JavaKet)

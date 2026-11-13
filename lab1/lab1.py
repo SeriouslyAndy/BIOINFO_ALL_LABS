@@ -1,3 +1,6 @@
+# @author: SeriouslyAndy(JavaKet)
+# @date: 13-11-2026
+
 import random
 
 ALPHABET = "ACGT"

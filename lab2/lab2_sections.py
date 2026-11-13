@@ -1,3 +1,6 @@
+# @author: SeriouslyAndy(JavaKet)
+# @date: 13-11-2026
+
 import os
 import random
 import sys
@@ -39,8 +42,15 @@ def plot_gene_counts(counts, out_file):
     ax.bar(x, counts, color=colors, width=0.8)
 
     ax.axhline(best, color="#52514e", linewidth=1, linestyle="--")
-    ax.text(len(counts) + 0.5, best, " max = " + str(best),
-            va="center", ha="left", color="#0b0b0b", fontsize=9)
+    ax.text(
+        len(counts) + 0.5,
+        best,
+        " max = " + str(best),
+        va="center",
+        ha="left",
+        color="#0b0b0b",
+        fontsize=9,
+    )
 
     ax.set_title("Valid genes (AUG ... stop) per section", loc="left")
     ax.set_xlabel("Section")
@@ -75,8 +85,18 @@ if __name__ == "__main__":
         open_starts = find_open_starts(rna)
         names.append(name)
         counts.append(len(genes))
-        print(len(names), ":", name[:50], "|", len(rna), "nt |", len(genes),
-              "valid genes |", len(open_starts), "AUG with no stop")
+        print(
+            len(names),
+            ":",
+            name[:50],
+            "|",
+            len(rna),
+            "nt |",
+            len(genes),
+            "valid genes |",
+            len(open_starts),
+            "AUG with no stop",
+        )
 
     if not counts:
         print("No sections found.")
