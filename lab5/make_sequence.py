@@ -1,5 +1,5 @@
 # @author: SeriouslyAndy(JavaKet)
-# @date: 13-11-2026
+# @date: 06-11-2026
 
 """Exercise 1: make a random DNA sequence of 200 to 400 bases with 3 or 4 transposable elements.
 

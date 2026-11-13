@@ -1,6 +1,6 @@
 <!--
 @author: SeriouslyAndy(JavaKet)
-@date: 13-11-2026
+@date: 16-10-2026
 -->
 
 # Lab 2 – From gene to protein

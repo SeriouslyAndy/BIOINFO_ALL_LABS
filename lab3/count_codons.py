@@ -1,5 +1,5 @@
 # @author: SeriouslyAndy(JavaKet)
-# @date: 13-11-2026
+# @date: 23-10-2026
 
 """Exercise 1: show the 10 most frequent codons in a FASTA genome.
 

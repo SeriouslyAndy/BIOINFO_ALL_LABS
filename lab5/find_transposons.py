@@ -1,5 +1,5 @@
 # @author: SeriouslyAndy(JavaKet)
-# @date: 13-11-2026
+# @date: 06-11-2026
 
 """Exercises 2 and 3: find the transposable elements in a sequence and print where they are.
 

@@ -1,5 +1,5 @@
 # @author: SeriouslyAndy(JavaKet)
-# @date: 13-11-2026
+# @date: 23-10-2026
 
 """Small Qt building blocks for the app: a background worker, a bar chart and read-only tables."""
 

@@ -1,5 +1,5 @@
 # @author: SeriouslyAndy(JavaKet)
-# @date: 13-11-2026
+# @date: 23-10-2026
 
 """Find viral genomes on NCBI and download them, keeping a copy in the cache folder."""
 

@@ -1,5 +1,5 @@
 # @author: SeriouslyAndy(JavaKet)
-# @date: 13-11-2026
+# @date: 23-10-2026
 
 """Virus Diet Explorer: search a virus on NCBI, count its codons and compare it with USDA foods.
 

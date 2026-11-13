@@ -1,5 +1,5 @@
 # @author: SeriouslyAndy(JavaKet)
-# @date: 13-11-2026
+# @date: 30-10-2026
 
 """Exercise 1: break a genome into random reads, then put it back together from the reads alone.
 
