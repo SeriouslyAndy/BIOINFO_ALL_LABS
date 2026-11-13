@@ -32,6 +32,3 @@ pip install -r requirements-dev.txt -r lab3/requirements.txt
 black --check lab3 lab4 lab5 lab6/lab6_2
 mypy lab3 lab4 lab5 lab6/lab6_2 && pytest lab3 lab4 lab5 lab6/lab6_2
 ```
-
-**NOTA BENE!** The Date appears off because of the mistake of because it was an
-automated process. I will rectify it.
